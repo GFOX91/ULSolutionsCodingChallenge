@@ -41,5 +41,21 @@ namespace ULSolutions.Test.Business
             // Assert
             result.Should().Throw<ArgumentException>();
         }
+
+        [Theory]
+        [InlineData("4+5*2", 14)]
+        [InlineData("4+5/2", 6.5)]
+        [InlineData("4+5/2-1", 5.5)]
+        public void Evaluate_ReturnsCalculatedResult_WhenOk(string expression, double actualResult)
+        {
+            // Arrange
+            var sut = new ExpressionHelper();
+
+            // Act
+            var expectedResult = sut.Evaluate(expression);
+
+            // Assert
+            expectedResult.Should().Be(actualResult);
+        }
     }
 }
