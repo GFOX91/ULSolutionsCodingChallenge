@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Net;
 using ULSolutions.Business.Helpers;
 
 namespace ULSolutions.Api.Controllers
@@ -20,15 +21,17 @@ namespace ULSolutions.Api.Controllers
             try
             {
                 var result = ExpressionHelper.Evaluate(expression);
+
+                return Ok(result);
             }
-            catch (ArgumentException ex)
+            catch (Exception ex)
             {
-                return BadRequest(ex.InnerException?.Message);
+                if (ex is ArgumentException)
+                    return BadRequest(ex.InnerException?.Message);
+                else
+                    return StatusCode((int)HttpStatusCode.InternalServerError);
             }
 
-
-
-            return Ok();
         }
     }
 }

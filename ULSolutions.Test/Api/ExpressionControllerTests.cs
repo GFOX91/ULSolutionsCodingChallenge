@@ -48,6 +48,39 @@ namespace ULSolutions.Test.Api
             ExpressionHelper.Verify(x => x.Evaluate(expression), Times.Once);
         }
 
+        [Fact]
+        private void Evaluate_ReturnsInternalServerError_WhenAllOtherExceptionsThrown()
+        {
+            // arrange
+            string expression = "2+5+3";
+
+            ExpressionHelper.Setup(x => x.Evaluate(expression)).Throws<Exception>();
+
+            // act
+            var result = controller.Evaluate(expression) as ObjectResult;
+
+            // assert
+            result?.StatusCode.Should().Be((int)HttpStatusCode.InternalServerError);
+            ExpressionHelper.Verify(x => x.Evaluate(expression), Times.Once);
+        }
+
+        [Fact]
+        private void Evaluate_ReturnsOkWithCalculatedResult_WhenSuccesful()
+        {
+            // arrange
+            string expression = "4+5*2";
+
+            ExpressionHelper.Setup(x => x.Evaluate(expression)).Returns(14);
+
+            // act
+            var result = controller.Evaluate(expression) as OkObjectResult;
+
+            // assert
+            result?.StatusCode.Should().Be((int)HttpStatusCode.OK);
+            result?.Value.Should().Be(14);
+            ExpressionHelper.Verify(x => x.Evaluate(expression), Times.Once);
+        }
+
         #endregion Evaluate
     }
 }
