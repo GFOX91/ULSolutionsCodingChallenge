@@ -10,54 +10,16 @@ namespace ULSolutions.Business.Helpers
 {
     public class ExpressionHelper
     {
+        /// <summary>
+        /// Evaluates the sum of a string expression
+        /// </summary>
+        /// <param name="expression">The string expression be evaluated</param>
+        /// <returns>The result of the evaluated expression as a double</returns>
         public double Evaluate(string expression)
         {
-            // 1. Perform some bounds checking - Validate string provided is not null, remove any spaces and ensure string is in expected form, return relevant exceptions if any checking fails
-           expression = Validate(expression);
-
-            // 2. split expression into list of factors
+            expression = Validate(expression);
             var numbersAndOperators = SplitIntoNumbersAndOperators(expression);
-
-            // 3. iterate in order of DMAS and perform calulation using left number, operator and, right number
-            List<string> OperatorsInOrderOfBodmas = new List<string>() { "/", "*", "+", "-" };
-
-            double result = 0;
-
-            while (numbersAndOperators.Count() > 1) 
-            {
-                foreach (var @operator in OperatorsInOrderOfBodmas) 
-                {
-                    // get the index of the current operator
-                    int operatorIndex = numbersAndOperators.IndexOf(@operator);
-
-                    if (operatorIndex > 0)
-                    {
-                        double leftNumber = double.Parse(numbersAndOperators[operatorIndex - 1]);
-                        double rightNumber = double.Parse(numbersAndOperators[operatorIndex + 1]);
-                        string currentOperator = numbersAndOperators[operatorIndex];
-
-                        //perform calculation using numbers and operator
-                        result = CalculateNextResult(currentOperator, leftNumber, rightNumber);
-                        //if (currentOperator == "/")
-                        //    result = leftNumber / rightNumber;
-                        //else if (currentOperator == "*")
-                        //    result = leftNumber * rightNumber;
-                        //else if (currentOperator == "+")
-                        //    result = leftNumber + rightNumber;
-                        //else if (currentOperator == "-")
-                        //    result = leftNumber - rightNumber;
-
-                        //replace
-                        numbersAndOperators.RemoveAt(operatorIndex);
-                        numbersAndOperators.Insert(operatorIndex, result.ToString());
-                        numbersAndOperators.RemoveAt(operatorIndex + 1);
-                        numbersAndOperators.RemoveAt(operatorIndex - 1);
-
-                    }
-                }   
-            }
-
-            return result;
+            return CalculateByOperatorPrecedence(numbersAndOperators);
         }
 
         private string Validate(string expression)
@@ -74,8 +36,35 @@ namespace ULSolutions.Business.Helpers
 
         public List<string> SplitIntoNumbersAndOperators(string expression)
         {
-            Regex regex = new Regex(@"(\d+|[-+\/*]){1}");
+            Regex regex = new Regex(@"([0-9]+|[-+\/*]){1}");
             return regex.Matches(expression).Select(match => match.Value).ToList();
+        }
+
+        public double CalculateByOperatorPrecedence(List<string>numbersAndOperators)
+        {
+            double result = 0;
+            List<string> OperatorsInOrderOfBodmas = new List<string>() { "/", "*", "+", "-" };
+
+            while (numbersAndOperators.Count() > 1)
+            {
+                foreach (var @operator in OperatorsInOrderOfBodmas)
+                {
+                    int operatorIndex = numbersAndOperators.IndexOf(@operator);
+
+                    if (operatorIndex > 0)
+                    {
+                        string currentOperator = numbersAndOperators[operatorIndex];
+                        double leftNumber = double.Parse(numbersAndOperators[operatorIndex - 1]);
+                        double rightNumber = double.Parse(numbersAndOperators[operatorIndex + 1]);
+
+                        result = CalculateNextResult(currentOperator, leftNumber, rightNumber);
+
+                        ReplaceSumCalculatedWithCurrentResult(operatorIndex, result, numbersAndOperators);
+                    }
+                }
+            }
+
+            return result;
         }
 
         public double CalculateNextResult(string @operator, double leftNumber, double rightNumber)
@@ -88,6 +77,14 @@ namespace ULSolutions.Business.Helpers
                 return leftNumber + rightNumber;
             else
                 return leftNumber - rightNumber;
+        }
+
+        private void ReplaceSumCalculatedWithCurrentResult(int operatorIndex, double result, List<string> numbersAndOperators)
+        {
+            numbersAndOperators.RemoveAt(operatorIndex);
+            numbersAndOperators.Insert(operatorIndex, result.ToString());
+            numbersAndOperators.RemoveAt(operatorIndex + 1);
+            numbersAndOperators.RemoveAt(operatorIndex - 1);
         }
 
 
