@@ -49,6 +49,23 @@ namespace ULSolutions.Test.Api
         }
 
         [Fact]
+        private void Evaluate_ReturnsBadRequest_WhenDivideByZeroExceptionThrown()
+        {
+            // arrange
+            string expression = "2/0+5";
+
+            ExpressionHelper.Setup(x => x.Evaluate(expression)).Throws<DivideByZeroException>();
+
+            // act
+            var result = controller.Evaluate(expression) as ObjectResult;
+
+            // assert
+            result?.StatusCode.Should().Be((int)HttpStatusCode.BadRequest);
+            result?.Value.Should().Be("Unable to divide by zero");
+            ExpressionHelper.Verify(x => x.Evaluate(expression), Times.Once);
+        }
+
+        [Fact]
         private void Evaluate_ReturnsInternalServerError_WhenAllOtherExceptionsThrown()
         {
             // arrange
