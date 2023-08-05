@@ -11,7 +11,7 @@ namespace ULSolutions.Business.Helpers
         public double Evaluate(string expression)
         {
             // 1. Perform some bounds checking - Validate string provided is not null and is in expected form, return relevant exceptions if any checking fails
-            if (string.IsNullOrWhiteSpace(expression)) throw new ArgumentException();
+            if (string.IsNullOrWhiteSpace(expression)) throw new ArgumentException("expression cannot be null or empty");
 
 
 

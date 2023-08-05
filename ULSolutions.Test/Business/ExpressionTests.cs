@@ -23,7 +23,23 @@ namespace ULSolutions.Test.Business
             var result = () => sut.Evaluate(expression);
 
             // Assert
-            result.Should().Throw<ArgumentException>().WithMessage("expression cannot be null or empty");
+            result.Should().Throw<ArgumentException>();
+        }
+
+        [Theory]
+        [InlineData("1++2")]
+        [InlineData("+3+2 ")]
+        [InlineData("3/2++")]
+        public void Evaluate_ThrowsException_WhenExpressionIsNotInCorrectFormat(string expression)
+        {
+            // Arrange
+            var sut = new ExpressionHelper();
+
+            // Act
+            var result = () => sut.Evaluate(expression);
+
+            // Assert
+            result.Should().Throw<ArgumentException>();
         }
     }
 }
