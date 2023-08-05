@@ -26,7 +26,7 @@ namespace ULSolutions.Business.Helpers
 
         private string Validate(string expression)
         {
-            if (string.IsNullOrWhiteSpace(expression)) throw new ArgumentException("expression cannot be null or empty");
+            if (string.IsNullOrWhiteSpace(expression)) throw new ArgumentException("Expression cannot be null or empty");
 
             expression = String.Concat(expression.Where(c => !Char.IsWhiteSpace(c)));
 
