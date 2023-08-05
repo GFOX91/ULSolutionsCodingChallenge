@@ -17,6 +17,17 @@ namespace ULSolutions.Api.Controllers
         [HttpPost]
         public IActionResult Evaluate([FromBody] string expression)
         {
+            try
+            {
+                var result = ExpressionHelper.Evaluate(expression);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.InnerException?.Message);
+            }
+
+
+
             return Ok();
         }
     }
