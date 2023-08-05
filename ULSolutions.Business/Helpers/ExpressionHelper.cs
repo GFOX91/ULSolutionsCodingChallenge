@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ULSolutions.Business.Helpers
@@ -13,7 +14,8 @@ namespace ULSolutions.Business.Helpers
             // 1. Perform some bounds checking - Validate string provided is not null and is in expected form, return relevant exceptions if any checking fails
             if (string.IsNullOrWhiteSpace(expression)) throw new ArgumentException("expression cannot be null or empty");
 
-
+            Regex expectedFormat = new Regex(@"^([0-9]+[-+*\/])+[0-9]+$");
+            if (expectedFormat.IsMatch(expression) == false) throw new ArgumentException("Expression is in inavlid format");
 
             // 2. Remove any spaces in the string as calculation will be performed by iterating through chars
             // 3. Find the value of the first number in the expression, will be used as initial sum in calculation
