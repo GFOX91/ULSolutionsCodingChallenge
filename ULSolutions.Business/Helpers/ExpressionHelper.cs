@@ -36,15 +36,16 @@ namespace ULSolutions.Business.Helpers
                         double rightNumber = double.Parse(numbersAndOperators[operatorIndex + 1]);
                         string currentOperator = numbersAndOperators[operatorIndex];
 
-                        //perform calculation using numbers and operator 
-                        if (currentOperator == "/")
-                            result = leftNumber / rightNumber;
-                        else if (currentOperator == "*")
-                            result = leftNumber * rightNumber;
-                        else if (currentOperator == "+")
-                            result = leftNumber + rightNumber;
-                        else if (currentOperator == "-")
-                            result = leftNumber - rightNumber;
+                        //perform calculation using numbers and operator
+                        result = CalculateNextResult(currentOperator, leftNumber, rightNumber);
+                        //if (currentOperator == "/")
+                        //    result = leftNumber / rightNumber;
+                        //else if (currentOperator == "*")
+                        //    result = leftNumber * rightNumber;
+                        //else if (currentOperator == "+")
+                        //    result = leftNumber + rightNumber;
+                        //else if (currentOperator == "-")
+                        //    result = leftNumber - rightNumber;
 
                         //replace
                         numbersAndOperators.RemoveAt(operatorIndex);
@@ -75,6 +76,18 @@ namespace ULSolutions.Business.Helpers
         {
             Regex regex = new Regex(@"(\d+|[-+\/*]){1}");
             return regex.Matches(expression).Select(match => match.Value).ToList();
+        }
+
+        public double CalculateNextResult(string @operator, double leftNumber, double rightNumber)
+        {
+            if (@operator == "/")
+                return leftNumber / rightNumber;
+            else if (@operator == "*")
+                return leftNumber * rightNumber;
+            else if (@operator == "+")
+                return leftNumber + rightNumber;
+            else
+                return leftNumber - rightNumber;
         }
 
 
