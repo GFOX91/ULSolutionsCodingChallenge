@@ -15,7 +15,15 @@ namespace ULSolutions.Business.Helpers
            expression = Validate(expression);
 
             // 3. Find the value of the first number in the expression, will be used as initial sum in calculation
-            int firstNumber = (int)(expression[0] - '0');
+            int firstNumber = int.Parse(expression.Substring(0, 1));
+
+            double sum = firstNumber;
+
+            for (int i = 1; i<expression.Length; i += 2)
+            {
+                string nextOperator = expression.Substring(i, 1);
+                int nextNumber = int.Parse(expression.Substring(++i, 1));
+            }
 
             // 4. Iterate through remaining characters in the expression and update the existing sum value based on the next operator and number
             // 5. return the final sum
