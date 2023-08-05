@@ -15,9 +15,6 @@ namespace ULSolutions.Business.Helpers
            expression = Validate(expression);
 
             // 3. Find the value of the first number in the expression, will be used as initial sum in calculation
-            var test1 = expression[0];
-            var test2 = test1 - '0';
-
             int firstNumber = (int)(expression[0] - '0');
 
             // 4. Iterate through remaining characters in the expression and update the existing sum value based on the next operator and number
