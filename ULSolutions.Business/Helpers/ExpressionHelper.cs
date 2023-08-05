@@ -19,15 +19,16 @@ namespace ULSolutions.Business.Helpers
             var numbersAndOperators = SplitIntoNumbersAndOperators(expression);
 
             // 3. iterate in order of DMAS and perform calulation using left number, operator and, right number
-            List<string> dmas = new List<string>() { "/", "*", "+", "-" };
+            List<string> OperatorsInOrderOfBodmas = new List<string>() { "/", "*", "+", "-" };
 
             double result = 0;
 
             while (numbersAndOperators.Count() > 1) 
             {
-                foreach (var dmasOperator in dmas) 
+                foreach (var @operator in OperatorsInOrderOfBodmas) 
                 {
-                    int operatorIndex = numbersAndOperators.IndexOf(dmasOperator);
+                    // get the index of the current operator
+                    int operatorIndex = numbersAndOperators.IndexOf(@operator);
 
                     if (operatorIndex > 0)
                     {
@@ -35,6 +36,7 @@ namespace ULSolutions.Business.Helpers
                         double rightNumber = double.Parse(numbersAndOperators[operatorIndex + 1]);
                         string currentOperator = numbersAndOperators[operatorIndex];
 
+                        //perform calculation using numbers and operator 
                         if (currentOperator == "/")
                             result = leftNumber / rightNumber;
                         else if (currentOperator == "*")
@@ -44,6 +46,7 @@ namespace ULSolutions.Business.Helpers
                         else if (currentOperator == "-")
                             result = leftNumber - rightNumber;
 
+                        //replace
                         numbersAndOperators.RemoveAt(operatorIndex);
                         numbersAndOperators.Insert(operatorIndex, result.ToString());
                         numbersAndOperators.RemoveAt(operatorIndex + 1);
@@ -52,8 +55,6 @@ namespace ULSolutions.Business.Helpers
                     }
                 }   
             }
-
-
 
             return result;
         }
