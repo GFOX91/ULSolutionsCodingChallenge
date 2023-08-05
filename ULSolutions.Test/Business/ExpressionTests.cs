@@ -8,8 +8,13 @@ using ULSolutions.Business.Helpers;
 
 namespace ULSolutions.Test.Business
 {
-    public class ExpressionTests
+    /// <summary>
+    /// To test and cover the methods in the expression helper class
+    /// </summary>
+    public class ExpressionHelperTests
     {
+        #region SpltIntoNumbersAndOperators
+
         [Fact]
         public void SplitIntoNumbersAndOperators_ReturnsListOfNumbersAndOperators()
         {
@@ -34,7 +39,9 @@ namespace ULSolutions.Test.Business
             result.Should().BeEquivalentTo(expectedResult);
         }
 
+        #endregion SpltIntoNumbersAndOperators
 
+        #region Evaluate
 
         [Theory]
         [InlineData("")]
@@ -84,5 +91,9 @@ namespace ULSolutions.Test.Business
             // Assert
             expectedResult.Should().Be(actualResult);
         }
+
+        #endregion Evaluate
+
+
     }
 }

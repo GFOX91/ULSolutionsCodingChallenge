@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
+[assembly: InternalsVisibleTo("ULSolutions.Test")]
 namespace ULSolutions.Business.Helpers
 {
     public class ExpressionHelper
@@ -34,7 +36,7 @@ namespace ULSolutions.Business.Helpers
             return expression;
         }
 
-        public List<string> SplitIntoNumbersAndOperators(string expression)
+        internal List<string> SplitIntoNumbersAndOperators(string expression)
         {
             Regex regex = new Regex(@"([0-9]+|[-+\/*]){1}");
             return regex.Matches(expression).Select(match => match.Value).ToList();
@@ -67,7 +69,7 @@ namespace ULSolutions.Business.Helpers
             return result;
         }
 
-        public double CalculateNextResult(string @operator, double leftNumber, double rightNumber)
+        private double CalculateNextResult(string @operator, double leftNumber, double rightNumber)
         {
             if (@operator == "/")
                 return leftNumber / rightNumber;
