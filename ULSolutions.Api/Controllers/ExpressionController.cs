@@ -15,6 +15,11 @@ namespace ULSolutions.Api.Controllers
 
         public IExpressionHelper ExpressionHelper { get; }
 
+        /// <summary>
+        /// Evaluates the sum of a string expression 
+        /// </summary>
+        /// <param name="expression">The expression being evaluated</param>
+        /// <returns>An IAction result</returns>
         [HttpPost]
         [ProducesResponseType(typeof(string), 200)]
         [ProducesResponseType(typeof(string), 400)]
