@@ -14,19 +14,11 @@ namespace ULSolutions.Business.Helpers
             // 1. Perform some bounds checking - Validate string provided is not null, remove any spaces and ensure string is in expected form, return relevant exceptions if any checking fails
            expression = Validate(expression);
 
-            // 3. Find the value of the first number in the expression, will be used as initial sum in calculation
-            int firstNumber = int.Parse(expression.Substring(0, 1));
+            // 2. split expression into list of factors
+            var factors = SplitIntoNumbersAndOperators(expression);
 
-            double sum = firstNumber;
-
-            for (int i = 1; i<expression.Length; i += 2)
-            {
-                string nextOperator = expression.Substring(i, 1);
-                int nextNumber = int.Parse(expression.Substring(++i, 1));
-            }
-
-            // 4. Iterate through remaining characters in the expression and update the existing sum value based on the next operator and number
-            // 5. return the final sum
+            // 3. iterate in order od DMAS and perform calulation
+            List<string> dmas = new List<string>() { "/", "*", "+", "-" };
 
             return 0;
         }
@@ -41,6 +33,12 @@ namespace ULSolutions.Business.Helpers
             if (expectedFormat.IsMatch(expression) == false) throw new ArgumentException("Expression is in invalid format");
 
             return expression;
+        }
+
+        public List<string> SplitIntoNumbersAndOperators(string expression)
+        {
+            Regex regex = new Regex(@"(\d+|[-+\/*]){1}");
+            return regex.Matches(expression).Select(match => match.Value).ToList();
         }
     }
 }
