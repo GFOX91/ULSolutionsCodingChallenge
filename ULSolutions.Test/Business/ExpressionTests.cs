@@ -10,15 +10,13 @@ namespace ULSolutions.Test.Business
 {
     public class ExpressionTests
     {
-
-
         [Fact]
-        public void SplitIntoNumbersAndOperators_ReturnsListOfNumbersAndOPerators()
+        public void SplitIntoNumbersAndOperators_ReturnsListOfNumbersAndOperators()
         {
             // Arrange
             var sut = new ExpressionHelper();
 
-            var expresion = "4+5*2";
+            var expression = "4+5*2";
 
             var expectedResult = new List<string>()
             {
@@ -30,7 +28,7 @@ namespace ULSolutions.Test.Business
             };
 
             // Act
-            var result = sut.SplitIntoNumbersAndOperators(expresion);
+            var result = sut.SplitIntoNumbersAndOperators(expression);
 
             // Assert
             result.Should().BeEquivalentTo(expectedResult);
@@ -72,8 +70,9 @@ namespace ULSolutions.Test.Business
 
         [Theory]
         [InlineData("4+5*2", 14)]
-        //[InlineData("4+5/2", 6.5)]
-        //[InlineData("4+5/2-1", 5.5)]
+        [InlineData("4+5/2", 6.5)]
+        [InlineData("4+5/2-1", 5.5)]
+        [InlineData("4+10/2-1", 8)]
         public void Evaluate_ReturnsCalculatedResult_WhenOk(string expression, double actualResult)
         {
             // Arrange
