@@ -1,3 +1,6 @@
+using System.Linq.Expressions;
+using ULSolutions.Business.Helpers;
+
 namespace ULSolutions.Api
 {
     public class Program
@@ -12,6 +15,8 @@ namespace ULSolutions.Api
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddScoped<IExpressionHelper, ExpressionHelper>(); 
 
             var app = builder.Build();
 

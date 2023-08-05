@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 [assembly: InternalsVisibleTo("ULSolutions.Test")]
 namespace ULSolutions.Business.Helpers
 {
-    public class ExpressionHelper
+    public class ExpressionHelper : IExpressionHelper
     {
         /// <summary>
         /// Evaluates the sum of a string expression
@@ -42,7 +42,7 @@ namespace ULSolutions.Business.Helpers
             return regex.Matches(expression).Select(match => match.Value).ToList();
         }
 
-        public double CalculateByOperatorPrecedence(List<string>numbersAndOperators)
+        public double CalculateByOperatorPrecedence(List<string> numbersAndOperators)
         {
             double result = 0;
             List<string> OperatorsInOrderOfBodmas = new List<string>() { "/", "*", "+", "-" };
